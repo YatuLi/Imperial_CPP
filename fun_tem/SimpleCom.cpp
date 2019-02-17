@@ -1,13 +1,18 @@
+/*
+  this source file is more about the function template SimpleCom(const T& a, const T& b), which helps the class template SortedList with all types of comparisons.
+
+  But it does have a compilable ExtendableArrayBetter but currently, some problems existing in SortedList which is an instantiation of class template ExtendableArrayBetter.
+
+  This log is done at 21:46, 17/02/2019.
+*/
+
+
 #include <iostream>
 
 using namespace std;
 
 int INT_MAX = 1000;
 
-// have a cap on the size of the internal store to avoid an array which is too large to handle.
-// 1. apending or inserting to an ExtendableArrayBetter at full capacity: return false
-// 2. remove data from an invalid location: return false
-// 3. Be careful about the INT_MAX, which is defined above and out of the template, this is a parameter to tell the programme the max limit.
 template <class T, int MAXCAP = INT_MAX>
 class ExtendableArrayBetter{
   // private members, just declare them without assignment
@@ -129,11 +134,25 @@ public:
   }
 };
 
-// private inheritance. --> make all public members of ExtendabaleArray into private
-template <typename T, int MAXCAP = INT_MAX>
-class SortedList: private ExtendableArrayBetter <T, MAXCAP>{
-  // typedef ExtendableArrayBetter <T> Base;
-  using Base = ExtendableArrayBetter <T, MAXCAP>;
+// This is is a function template... for simpleCompare.
+template <typename T>
+int simpleCompare (const T& a, const T& b){
+  if (a < b){
+    return -1;
+  } else if (a == b) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+template <typename T,
+  int (*comp)(const T& a, const T& b) = simpleCompare,
+  int MAXCAP = INT_MAX>
+class SortedList : private ExtendableArrayBetter <T, MAXCAP>{
+
+  // make Base as an aliase of ExtendableArrayBetter, as Base is easier to write than the long word ExtendableArrayBetter.
+  typedef ExtendableArrayBetter <T> Base;
 
   const T err_val;
 
@@ -154,7 +173,7 @@ class SortedList: private ExtendableArrayBetter <T, MAXCAP>{
     return head;
   }
 
-public:
+  public:
   int indexOf (T value) const{
     int index = locate (value);
     if (index < count() && (value == (*this)[index])){
@@ -166,7 +185,7 @@ public:
   SortedList (int cap = 10, const T ev = 0):
     Base (cap), err_val(ev){}
 
-  using Base<T, MAXCAP>::count;
+  using Base::count;
 
   void add(T value){
     this->insert (value, locate(value));
@@ -184,13 +203,27 @@ public:
   }
 };
 
-void print (const SortedList<char>& sl){
-  cout << "{ ";
-  if (sl.count() > 0){
-    cout << sl.get(0);
-    for (int i = 1; i < sl.count(); i ++){
-      cout << ", " << sl.get(i);
-    }
-    cout << " }" << endl;
+int main(){
+  char x = 'x';
+  char y = 'y';
+
+  struct Point{
+    int x, y;
+    Point (int x = 0, int y = 0):
+      x(x),
+      y(y){
+
+      }
   }
+
+  p1 (1, 1);
+
+  cout << "x vs y: " << simpleCompare<char>(x,y) << endl;
+  // OUT: x vs y: -1
+  cout << simpleCompare(x, y) << endl;
+  // Implicit Instantiation: simpleCompare<char>. OUT: x vs y: -1
+
+  // this is how we use struct, like an obj.
+  cout << "p1.x vs p1.y: " << simpleCompare(p1.x, p1.y) << endl;
+  // Implicitly Instantiation: simpleCompare<int> OUT: p1.x vs p1.y
 }

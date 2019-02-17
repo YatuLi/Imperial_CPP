@@ -129,68 +129,10 @@ public:
   }
 };
 
-// private inheritance. --> make all public members of ExtendabaleArray into private
-template <typename T, int MAXCAP = INT_MAX>
-class SortedList: private ExtendableArrayBetter <T, MAXCAP>{
-  // typedef ExtendableArrayBetter <T> Base;
-  using Base = ExtendableArrayBetter <T, MAXCAP>;
+int main(){
+  typedef ExtendableArrayBetter<char, 10> TinyArray;
+  TinyArray arr(1);
+  arr.append('a');
 
-  const T err_val;
-
-  int locate (T value) const{
-    int head = 0;
-    int tail = count();
-    while (head < tail){
-      int mid = (head + tail)/2;
-      if ((*this)[mid] < value){
-        head = mid + 1;
-      } else if ((*this)[mid] == value) {
-        return mid;
-      } else {
-        tail = mid;
-      }
-    }
-
-    return head;
-  }
-
-public:
-  int indexOf (T value) const{
-    int index = locate (value);
-    if (index < count() && (value == (*this)[index])){
-      return index;
-    }
-    return -1;
-  }
-
-  SortedList (int cap = 10, const T ev = 0):
-    Base (cap), err_val(ev){}
-
-  using Base<T, MAXCAP>::count;
-
-  void add(T value){
-    this->insert (value, locate(value));
-  }
-
-  bool removeAt (int index){
-    return this->remove(index);
-  }
-
-  T get(int index) const {
-    if (0 <= index && index < count()){
-      return (*this)[index];
-    }
-    return err_val;
-  }
-};
-
-void print (const SortedList<char>& sl){
-  cout << "{ ";
-  if (sl.count() > 0){
-    cout << sl.get(0);
-    for (int i = 1; i < sl.count(); i ++){
-      cout << ", " << sl.get(i);
-    }
-    cout << " }" << endl;
-  }
+  return 0;
 }

@@ -1,1 +1,15 @@
-sf
+authorisation
+  main.cpp:27 -------
+1.
+17/02/2019 18:48 PM
+currently working on LookUpTable.cpp, where the SortedList part is not resolved.
+
+2.
+Base part.... (asking Sicong about it), pls refer to:
+  dir fun_tem
+  dir look_up_table
+  dir sorted_list
+
+3.
+function template simpleCompare(const T&, const T&) first appears in SimpleCom.cpp, referred to:
+  dir fun_tem
