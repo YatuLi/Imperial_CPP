@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// this is a class declaration, so it is supposed to be enclosed by the brackets.
+// this is a class declaration, so it is supposed to be enclosed by the brackets.a
 class A{
 private:
   int j;

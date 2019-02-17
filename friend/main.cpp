@@ -11,7 +11,7 @@ using namespace std;
 class C2;
 class C1;
 
-class c2{
+class C2{
   int j;
 public:
   friend int f(C1&, C2&); // make the outlier function f as a friend, so it can access all its member, even private ones.
@@ -51,14 +51,14 @@ public:
     j = i;
   };
   friend class C4; // find where this class is, and all of its things could use things delcared in C3.
-}
+};
 
 class C4{
 public:
   int g(C3& aC3){
     return 2*aC3.j;
   }
-}
+};
 
 int main(){
   C1 a(7); // a.i = 7
